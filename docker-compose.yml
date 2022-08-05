@@ -1,0 +1,67 @@
+version: '3'
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: realestate_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432
+      DATABASE_HOST: 127.0.0.1
+    restart: always
+
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "test@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "test123!"
+    ports:
+      - "16543:80"
+    depends_on:
+      - db
+  app:
+    build: .
+    command: rails s -b 0.0.0.0 -p 3000
+    container_name: api
+    ports:
+      - 3000:3000
+    environment:
+      - RAILS_ENV=development
+      - POSTGRES_HOSTNAME=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=realestate_development
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    stdin_open: true
+    tty: true
+volumes:
+  pgdata:
+  bundle_cache:
+
+
+
+# docker exec -i supply_db_1 pg_restore -Fc -v -U postgres --dbname hingeto_supply_app_development < hingeto_supply_app_development_11_11
+# docker exec -i supply_web_1 rails c
+# Spree::Product.__elasticsearch__.create_index! force: true
+# Spree::Product.__elasticsearch__.refresh_index!
+
+# Spree::Product.import
+# docker exec -t -i supply_web_1 /bin/bash
+# docker-compose run --rm app bundle install
+# docker-compose run --rm web bundle exec rails db:setup
+# sudo chown -R baothi:baothi config/initializers/devise.rb
+# docker-compose run --rm app rails db:drop db:create db:migrate
+# docker-compose run --rm app bundle install
+# sudo chown -R baothi:baothi category
+# Article.create(title: 'Sample article', content: 'My awesome article', slug: 'sample-article')
+# client = Octokit::Client.new(client_id: '96d73a069cf5937c5ade' , client_secret: '0cfa53fa3f89f5cb8af9650e87f8334fd01f2884')
