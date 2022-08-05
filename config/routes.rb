@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
   # get '/articles', to: 'articles#index'
   resources :articles, only: %i[index show]
+  post 'login', to: 'access_tokens#create'
 end
