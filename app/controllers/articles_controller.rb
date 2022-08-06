@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   include Paginable
+  skip_before_action :authorize!, only: [:index, :show]
   # def index
   #   articles = Article.recent
   #   paginated = paginator.call(
@@ -12,8 +13,10 @@ class ArticlesController < ApplicationController
   # end
 
   def index
-    paginated = paginate(Article.recent)
-    render_collection(paginated)
+    articles = Article.recent.
+      page(params[:page]).
+      per(params[:per_page])
+    render json: articles
   end
 
   def show
