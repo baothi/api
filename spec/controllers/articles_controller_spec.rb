@@ -2,10 +2,12 @@ require 'rails_helper'
 describe ArticlesController , type: :controller do
   describe '#index' do
     subject { get :index }
+
     it 'should return success response' do
       subject
       expect(response).to have_http_status(:ok)
     end
+
     it 'should return proper json' do
       create_list :article, 2
       subject
@@ -32,20 +34,25 @@ describe ArticlesController , type: :controller do
       expect(json_data.first['id']).to eq(expected_article)
     end
   end
+
   describe '#show' do
     let(:article) { create :article }
     subject { get :show, params: { id: article.id } }
+
     it 'should return success response' do
       subject
       expect(response).to have_http_status(:ok)
     end
+    
     it 'should return proper json' do
       subject
-      expect(json_data['attributes']).to eq({
-          "title" => article.title,
-          "content" => article.content,
-          "slug" => article.slug
-      })
+      expected_article = Article.find(article.id)
+      expect(json_data['id']).to eq(expected_article.id.to_s)
+      # expect(json_data['attributes']).to eq({
+      #     "title" => article.title,
+      #     "content" => article.content,
+      #     "slug" => article.slug
+      # })
     end
   end
 

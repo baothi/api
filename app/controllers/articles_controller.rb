@@ -52,7 +52,7 @@ class ArticlesController < ApplicationController
   def update
     # article = Article.find(params[:id])
     article = current_user.articles.find(params[:id])
-    article.update_attributes!(article_params)
+    article.update!(article_params)
     render json: article, status: :ok
   rescue ActiveRecord::RecordNotFound
     authorization_error
