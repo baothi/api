@@ -66,3 +66,4 @@ volumes:
 # Article.create(title: 'Sample article', content: 'My awesome article', slug: 'sample-article')
 # client = Octokit::Client.new(client_id: '96d73a069cf5937c5ade' , client_secret: '0cfa53fa3f89f5cb8af9650e87f8334fd01f2884')
 # docker-compose run --rm app rails g model access_tokens token user:references
+# docker-compose run --rm app rails g migrate add_encrypted_password_to_users encrypted_password
